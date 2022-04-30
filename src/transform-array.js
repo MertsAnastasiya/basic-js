@@ -14,35 +14,70 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  /*console.log('ARRAY:  ' + arr);
-  if(!Array.isArray(arr)) return "\'arr\' parameter must be an instance of the Array!";
-  let newArray = [...arr];
-  arr.forEach((item, index) => {
-      if (item === '--double-next') {
-          newArray = [...arr];
-          if(index === newArray.length - 1) newArray.pop();
-          else newArray[index] = newArray[index + 1];
-      };
-      if (item === '--double-prev') {
-          newArray = [...arr];
-          if(index === 0) newArray.shift();
-          else newArray[index] = newArray[index - 1];
-      };
-      if (item === '--discard-prev') {
-          newArray = [...arr];
-          if(index === 0) newArray.shift();
-          else newArray.splice(index - 1, 2);
-      };
-      if (item === '--discard-next') {
-          newArray = [...arr];
-          if(index === newArray.length - 1) newArray.pop();
-          else newArray.splice(index, 2);
+    try{
+        // if(!Array.isArray(arr)) console.log('\'arr\' parameter must be an instance of the Array!');
+        if(!Array.isArray(arr)) throw Error('\'arr\' parameter must be an instance of the Array!');
+        let newArray = [];
+        let command = '';
+        let prevItem;
+        arr.forEach(item => {
+          if(item === '--double-next' || item === '--double-prev' || item === '--discard-next' || item === '--discard-prev') {
+              command = item;
+            } else {
+              if(command !== '' ) {
+                switch(command) {
+                  case '--discard-next': 
+                    prevItem = undefined;
+                    break;
+                  case '--discard-prev': 
+                  if( prevItem !== undefined) {
+                    newArray.pop();
+                  };
+                    newArray.push(item);
+                    prevItem = item;
+                    break;
+                  case '--double-prev': 
+                  if( prevItem !== undefined) {
+                    newArray.push(prevItem);
+                  }
+                    newArray.push(item);
+                    prevItem = item;
+                    break;
+                  case '--double-next':
+                    newArray.push(item);
+                    newArray.push(item);
+                    prevItem = item;
+                    break;
+                }
+                command = '';
+              } else {
+                newArray.push(item);
+                prevItem = item;
+              }
+            }
+          });
+    
+          if(command !== '' ) {
+            switch(command) {
+              case '--discard-prev': 
+              if( prevItem !== undefined) {
+                newArray.pop();
+              }
+                break;
+              case '--double-prev': 
+              if( prevItem !== undefined) {
+                newArray.push(prevItem);
+              }
+                break;
+            }
+          }
+          return (newArray);
+    
+      } catch {
+        throw Error('\'arr\' parameter must be an instance of the Array!');
       }
-  });
-  return newArray;*/
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
-}
+    }
+    
 
 module.exports = {
   transform
