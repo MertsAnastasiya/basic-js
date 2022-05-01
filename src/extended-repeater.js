@@ -15,29 +15,27 @@ const { NotImplementedError } = require('../extensions/index.js');
  * => 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
  *
  */
-function repeater(str, options ) {
-  // let newArray = [];
-  //   // const {repeatTimes = 1, separator = '+', addition = '', additionRepeatTimes = 1, additionSeparator = '|'} = {...options};
-  //   const {repeatTimes, separator, addition, additionRepeatTimes, additionSeparator} = {...options};
-  //   console.log(addition);
-  //   if(repeatTimes === 'undefined' ) repeatTimes = 1;
-  //   if(separator === 'undefined' ) separator = '+';
-  //   if(additionRepeatTimes === 'undefined' ) additionRepeatTimes = 1;
-  //   if(additionSeparator === 'undefined' ) additionRepeatTimes = '|';
-  //   if(addition === 'undefined' ) additionRepeatTimes = '';
+function repeater(str, options) {
+  let newArray = [];
+    // const {repeatTimes = 1, separator = '+', addition = '', additionRepeatTimes = 1, additionSeparator = '|'} = {...options};
+  let {repeatTimes, separator, addition, additionRepeatTimes, additionSeparator} = {...options};
 
-  //   for( let i = 0; i < repeatTimes; i++){
-  //         newArray.push(str);
-  //         console.log(newArray);
-  //         for(let j = 0; j < additionRepeatTimes; j++) {
-  //             newArray.push(addition);
-  //             if (j < additionRepeatTimes - 1) newArray.push(additionSeparator);
-  //         }
-  //         if( i < repeatTimes - 1) newArray.push(separator);
-  //     };
-  //     return (newArray.join(''));
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+  if(typeof repeatTimes === 'undefined' ) repeatTimes = 1;
+  if(typeof separator === 'undefined' ) separator = '+';
+  if(typeof additionRepeatTimes === 'undefined' && typeof addition !== 'undefined') additionRepeatTimes = 1;
+  if(typeof additionRepeatTimes === 'undefined' ) additionRepeatTimes = 0;
+  if(typeof additionSeparator === 'undefined' ) additionSeparator = '|';
+  if(typeof addition === 'undefined' ) addition = '';
+    
+  for( let i = 0; i < repeatTimes; i++) {
+    newArray.push(String(str));
+    for (let j = 0; j < additionRepeatTimes; j++) {
+      if(j !== additionRepeatTimes -1 ) newArray.push(addition + additionSeparator);
+      else newArray.push(String(addition));
+    }
+    if(i !== repeatTimes - 1) newArray.push(String(separator));
+  };
+  return (newArray.join(''));
 }
 
 module.exports = {
